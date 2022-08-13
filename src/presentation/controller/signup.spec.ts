@@ -1,6 +1,21 @@
 import { SignUpController } from './signup'
 
 describe('SignUpController', () => {
+  test('Should return 200', () => {
+    const sut = new SignUpController()
+    const hhtpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+
+    const httpResponse = sut.handle(hhtpRequest)
+    expect(httpResponse.statusCode).toBe(200)
+  })
+
   test('Should return 400 if no name is provide', () => {
     const sut = new SignUpController()
     const httpRequest = {
