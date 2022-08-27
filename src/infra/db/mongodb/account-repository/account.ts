@@ -5,9 +5,10 @@ import { MongoHelper } from '../helpes/mongo-helper'
 
 export class AccountMongoRepository implements AddAccountRepository {
     async add(accountData: AddAccountModel): Promise<AccountModel> {
-        const accountCollection = await MongoHelper.getCollection('accounts')
-        const accountToBeInserted = Object.assign({}, accountData)
-        const result = await accountCollection.insertOne(accountToBeInserted)
-        return Object.assign({}, accountData, { id: result.insertedId.toHexString() })
+        const accountCollection = MongoHelper.getCollection('accounts')
+        const result = await accountCollection.insertOne(accountData)
+        const { insertedId: id } = result
+        const accountById = await accountCollection.findOne({ _id: id })
+        return MongoHelper.map(accountById)
     }
 }
