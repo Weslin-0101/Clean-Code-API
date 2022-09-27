@@ -1,14 +1,10 @@
 import { Validation } from '../../protocols/validation'
 
 export class ValidationComposite implements Validation {
-    private readonly _validation: Validation[]
-    
-    constructor(validations: Validation[]) {
-        this._validation = validations
-    }
+    constructor(private readonly _validations: Validation[]) {}
     
     validate(input: any): Error {
-        for (const validation of this._validation) {
+        for (const validation of this._validations) {
             const error = validation.validate(input)
             if (error) {
                 return error
