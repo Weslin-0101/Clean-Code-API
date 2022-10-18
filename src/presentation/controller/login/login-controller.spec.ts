@@ -30,7 +30,7 @@ const makeAuthentication = (): Authentication => {
 const makeValidation = (): Validation => {
     class ValidationStub implements Validation {
       validate (input: any): Error {
-        return null
+        return null as unknown as Error
       }
     }
     return new ValidationStub()
@@ -60,11 +60,11 @@ describe('Login Controller', () => {
 
     test('Should return 401 if invalid credentials are provided', async () => {
         const { sut, authenticationStub } = makeSut()
-        jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+        jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => resolve(null as unknown as string)))
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(unauthorized())
     })
-
+    
     test('Should return 500 if Authentication throws', async () => {
         const { sut, authenticationStub } = makeSut()
         jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
