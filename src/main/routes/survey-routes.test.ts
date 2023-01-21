@@ -80,36 +80,26 @@ describe('Survey Routes', () => {
                 .expect(403)
         })
 
-        // test('Should return 204 on add survey with valid accessToken', async () => {
-        //     const res = await accountCollection.insertOne({
-        //         name: 'Lucas',
-        //         email: 'anyemail@email.com',
-        //         password: '123',
-        //         role: 'admin'
-        //     })
+        test('Should return 204 on load surveys with valid accessToken', async () => {
+            const res = await accountCollection.insertOne({
+                name: 'Lucas',
+                email: 'anyemail@email.com',
+                password: '123'
+            })
 
-        //     const id = res.insertedId
-        //     const accessToken = sign({ id }, env.jwtSecret)
-        //     await accountCollection.updateOne({
-        //         _id: id
-        //     }, {
-        //         $set: {
-        //             accessToken
-        //         }
-        //     })
-        //     await request(app)
-        //         .post('/api/surveys')
-        //         .set('x-access-token', accessToken)
-        //         .send({
-        //             question: 'Definir comida',
-        //             answers: [{
-        //                 image: 'https://image.com',
-        //                 answer: 'Pizza'
-        //             }, {
-        //                 answer: 'Lasanha'
-        //             }]
-        //         })
-        //         .expect(204)
-        // })
+            const id = res.insertedId
+            const accessToken = sign({ id }, env.jwtSecret)
+            await accountCollection.updateOne({
+                _id: id
+            }, {
+                $set: {
+                    accessToken
+                }
+            })
+            await request(app)
+                .get('/api/surveys')
+                .set('x-access-token', accessToken)
+                .expect(204)
+        })
     })
 })
