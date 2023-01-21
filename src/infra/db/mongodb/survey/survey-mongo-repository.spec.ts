@@ -61,5 +61,12 @@ describe('Survey Mongo Repository', () => {
             const surveys = await sut.loadAll()
             expect(surveys).toBeInstanceOf(Array)
         })
+        
+        test('Should load empty list', async () => {
+            const sut = new SurveyMongoRepository()
+            const surveys = await sut.loadAll()
+            expect(surveys).toBeInstanceOf(Array)
+            expect(surveys.length).toBe(0)
+        })
     })
 })
