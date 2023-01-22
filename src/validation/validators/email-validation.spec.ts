@@ -1,5 +1,5 @@
 import { EmailValidation } from './email-validation'
-import { EmailValidator } from '../protocols/emailValidator'
+import { EmailValidator } from '@/validation/protocols/emailValidator'
 
 interface SutTypes {
   sut: EmailValidation
