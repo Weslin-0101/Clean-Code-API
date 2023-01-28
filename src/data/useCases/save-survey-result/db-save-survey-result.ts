@@ -4,7 +4,6 @@ export class DbSaveSurveyResult implements SaveSurveyResult {
     constructor(private readonly _saveSurveyResultRepository: SaveSurveyResultRepository) {}
 
     async save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-        await this._saveSurveyResultRepository.save(data)
-        return null
+        return await this._saveSurveyResultRepository.save(data)
     }
 }
