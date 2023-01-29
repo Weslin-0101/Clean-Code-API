@@ -60,6 +60,7 @@ describe('Survey Mongo Repository', () => {
             const sut = new SurveyMongoRepository()
             const surveys = await sut.loadAll()
             expect(surveys).toBeInstanceOf(Array)
+            expect(surveys[0].id).toBeTruthy()
         })
         
         test('Should load empty list', async () => {
@@ -88,6 +89,7 @@ describe('Survey Mongo Repository', () => {
             // const sut = new SurveyMongoRepository()
             // const survey = await sut.loadById(findById._id.toHexString())
             // expect(survey).toBeTruthy()
+            // expect(survey.id).toBeTruthy()
         })
     })
 })
