@@ -7,7 +7,7 @@ import { mockSurveysModel, mockSurveyModel } from "@/domain/test";
 export const mockAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
     async add(data: AddSurveyParams): Promise<void> {
-      return new Promise((resolve) => resolve());
+      return Promise.resolve();
     }
   }
 
@@ -17,7 +17,7 @@ export const mockAddSurvey = (): AddSurvey => {
 export const mockSurveysFactory = (): LoadSurveys => {
   class LoadSurveyStub implements LoadSurveys {
     async load(): Promise<SurveyModel[]> {
-      return new Promise((resolve) => resolve(mockSurveysModel()));
+      return Promise.resolve(mockSurveysModel());
     }
   }
 

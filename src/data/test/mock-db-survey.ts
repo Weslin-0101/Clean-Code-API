@@ -8,7 +8,7 @@ import { mockSurveyModel, mockSurveysModel } from "@/domain/test";
 export const mockAddSurveyRepository = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
     add(surveyData: AddSurveyParams): Promise<void> {
-      return new Promise((resolve) => resolve());
+      return Promise.resolve();
     }
   }
   return new AddSurveyRepositoryStub();
@@ -17,7 +17,7 @@ export const mockAddSurveyRepository = (): AddSurveyRepository => {
 export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
     loadById(id: string): Promise<SurveyModel> {
-      return new Promise((resolve) => resolve(mockSurveyModel()));
+      return Promise.resolve(mockSurveyModel());
     }
   }
   return new LoadSurveyByIdRepositoryStub();
@@ -26,7 +26,7 @@ export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
 export const mockLoadSurveysRepository = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {
     loadAll(): Promise<SurveyModel[]> {
-      return new Promise((resolve) => resolve(mockSurveysModel()));
+      return Promise.resolve(mockSurveysModel());
     }
   }
   return new LoadSurveysRepositoryStub();

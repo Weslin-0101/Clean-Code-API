@@ -10,7 +10,7 @@ import { mockAccountModel } from "@/domain/test";
 export const mockAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add(account: AddAccountParams): Promise<AccountModel> {
-      return new Promise((resolve) => resolve(mockAccountModel()));
+      return Promise.resolve(mockAccountModel());
     }
   }
   return new AddAccountStub();
@@ -19,7 +19,7 @@ export const mockAddAccount = (): AddAccount => {
 export const mockAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
     async auth(authentication: AuthenticationParams): Promise<string> {
-      return new Promise((resolve) => resolve("any_token"));
+      return Promise.resolve("any_token");
     }
   }
   return new AuthenticationStub();
