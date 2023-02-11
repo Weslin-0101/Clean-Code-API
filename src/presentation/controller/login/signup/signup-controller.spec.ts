@@ -19,6 +19,7 @@ import {
   badRequest,
   forbidden,
 } from "../../../helpers/http/http-helper";
+import { throwError } from "@/domain/test";
 
 type SutTypes = {
   sut: SignUpController;
@@ -107,9 +108,7 @@ describe("SignUpController", () => {
 
   test("Should return 500 if AddAccount throws", async () => {
     const { sut, addAccountStub } = makeSut();
-    jest.spyOn(addAccountStub, "add").mockImplementationOnce(async () => {
-      return new Promise((resolve, reject) => reject(new Error()));
-    });
+    jest.spyOn(addAccountStub, "add").mockImplementationOnce(throwError);
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new ServerError(undefined)));
   });
@@ -162,11 +161,7 @@ describe("SignUpController", () => {
 
   test("Should return 500 if Authentication throws", async () => {
     const { sut, authenticationStub } = makeSut();
-    jest
-      .spyOn(authenticationStub, "auth")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+    jest.spyOn(authenticationStub, "auth").mockImplementationOnce(throwError);
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
   });
