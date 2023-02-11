@@ -4,19 +4,19 @@
  */
 
 export default {
-  roots: ['<rootDir>/src'],
-  collectCoverage: true,
+  roots: ["<rootDir>/src"],
   collectCoverageFrom: [
-    '<rootDir>/src/**/**/*.ts',
-    '!<rootDir>/src/main/**'
+    "<rootDir>/src/**/*.ts",
+    "!<rootDir>/src/main/**",
+    "!**/test/**",
   ],
-  coverageDirectory: 'coverage',
-  coverageProvider: 'v8',
-  preset: '@shelf/jest-mongodb',
+  coverageDirectory: "coverage",
+  testEnvironment: "node",
+  preset: "@shelf/jest-mongodb",
   transform: {
-    '.+\\.ts$': 'ts-jest'
+    ".+\\.ts$": "ts-jest",
   },
   moduleNameMapper: {
-    '@/(.*)': '<rootDir>/src/$1'
-  }
-}
+    "@/(.*)": "<rootDir>/src/$1",
+  },
+};

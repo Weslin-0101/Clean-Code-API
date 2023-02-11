@@ -2,14 +2,14 @@ import {
   HttpRequest,
   Validation,
   AddSurvey,
-  AddSurveyParams,
 } from "./add-survey-controller-protocols";
 import { AddSurveyController } from "./add-survey-controller";
 import {
   badRequest,
   noContent,
   serverError,
-} from "../../../helpers/http/http-helper";
+} from "@/presentation/helpers/http/http-helper";
+import { mockAddSurvey, mockValidation } from "@/presentation/test";
 import { throwError } from "@/domain/test";
 import MockDate from "mockdate";
 
@@ -20,34 +20,14 @@ type SutTypes = {
 };
 
 const makeSut = (): SutTypes => {
-  const validationStub = makeValidation();
-  const addSurveyStub = makeAddSurvey();
+  const validationStub = mockValidation();
+  const addSurveyStub = mockAddSurvey();
   const sut = new AddSurveyController(validationStub, addSurveyStub);
   return {
     sut,
     validationStub,
     addSurveyStub,
   };
-};
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate(input: any): Error {
-      return null as unknown as Error;
-    }
-  }
-
-  return new ValidationStub();
-};
-
-const makeAddSurvey = (): AddSurvey => {
-  class AddSurveyStub implements AddSurvey {
-    async add(data: AddSurveyParams): Promise<void> {
-      return new Promise((resolve) => resolve());
-    }
-  }
-
-  return new AddSurveyStub();
 };
 
 const makeFakeRequest = (): HttpRequest => ({
