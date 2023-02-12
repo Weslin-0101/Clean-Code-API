@@ -6,7 +6,12 @@ import {
   success,
   forbidden,
 } from "@/main/docs/components";
-import { loginPath, surveyPath, signUpPath } from "@/main/docs/paths";
+import {
+  loginPath,
+  surveyPath,
+  signUpPath,
+  surveyResultPath,
+} from "@/main/docs/paths";
 import {
   accountSchema,
   loginParamsSchema,
@@ -17,6 +22,8 @@ import {
   apiKeyAuthSchema,
   signUpParamsSchema,
   addSurveyParamsSchema,
+  saveSurveyParamsSchema,
+  surveyResultSchema,
 } from "@/main/docs/schemas";
 
 export default {
@@ -48,6 +55,7 @@ export default {
     "/login": loginPath,
     "/signup": signUpPath,
     "/surveys": surveyPath,
+    "/surveys:{surveyId}/results": surveyResultPath,
   },
   schemas: {
     account: accountSchema,
@@ -58,6 +66,8 @@ export default {
     surveys: surveysSchema,
     survey: surveySchema,
     surveyAnswer: surveyAnswerSchema,
+    saveSurveyParams: saveSurveyParamsSchema,
+    surveyResult: surveyResultSchema,
   },
   components: {
     securitySchemes: {
