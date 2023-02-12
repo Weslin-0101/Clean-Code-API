@@ -4,12 +4,17 @@ import {
   unauthorized,
   notFound,
   success,
+  forbidden,
 } from "@/main/docs/components";
-import { loginPath } from "@/main/docs/paths";
+import { loginPath, surveyPath } from "@/main/docs/paths";
 import {
   accountSchema,
   loginParamsSchema,
   errorSchema,
+  surveyAnswerSchema,
+  surveySchema,
+  surveysSchema,
+  apiKeyAuthSchema,
 } from "@/main/docs/schemas";
 
 export default {
@@ -33,20 +38,31 @@ export default {
     {
       name: "Login",
     },
+    {
+      name: "Enquete",
+    },
   ],
   paths: {
     "/login": loginPath,
+    "/surveys": surveyPath,
   },
   schemas: {
     account: accountSchema,
     loginParams: loginParamsSchema,
     error: errorSchema,
+    surveys: surveysSchema,
+    survey: surveySchema,
+    surveyAnswer: surveyAnswerSchema,
   },
   components: {
+    securitySchemes: {
+      apiKeyAuth: apiKeyAuthSchema,
+    },
     success,
     badRequest,
     serverError,
     unauthorized,
     notFound,
+    forbidden,
   },
 };

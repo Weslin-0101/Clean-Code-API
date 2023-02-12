@@ -3,3 +3,4 @@ export * from "./server-error";
 export * from "./unauthorized";
 export * from "./not-found";
 export * from "./success";
+export * from "./forbidden";
