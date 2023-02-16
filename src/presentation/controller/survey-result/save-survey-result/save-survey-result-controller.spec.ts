@@ -16,7 +16,7 @@ export type SutTypes = {
   saveSurveyResultStub: SaveSurveyResult;
 };
 
-const makeFakeRequest = (): HttpRequest => ({
+const mockRequest = (): HttpRequest => ({
   params: {
     surveyId: "any_survey_id",
   },
@@ -52,7 +52,7 @@ describe("SaveSurveyResult Controller", () => {
   test("Should call LoadSurveyById with correct values", async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, "loadById");
-    await sut.handle(makeFakeRequest());
+    await sut.handle(mockRequest());
     expect(loadByIdSpy).toHaveBeenCalledWith("any_survey_id");
   });
 
@@ -61,7 +61,7 @@ describe("SaveSurveyResult Controller", () => {
     jest
       .spyOn(loadSurveyByIdStub, "loadById")
       .mockReturnValueOnce(Promise.resolve(null));
-    const httpResponse = await sut.handle(makeFakeRequest());
+    const httpResponse = await sut.handle(mockRequest());
     expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
   });
 
@@ -95,7 +95,7 @@ describe("SaveSurveyResult Controller", () => {
   test("Should call SaveSurveyResult with correct values", async () => {
     const { sut, saveSurveyResultStub } = makeSut();
     const saveSpy = jest.spyOn(saveSurveyResultStub, "save");
-    await sut.handle(makeFakeRequest());
+    await sut.handle(mockRequest());
     expect(saveSpy).toHaveBeenCalledWith({
       surveyId: "any_survey_id",
       accountId: "any_account_id",
@@ -117,7 +117,7 @@ describe("SaveSurveyResult Controller", () => {
 
   test("Should return 200 on success", async () => {
     const { sut } = makeSut();
-    const httpResponse = await sut.handle(makeFakeRequest());
+    const httpResponse = await sut.handle(mockRequest());
     expect(httpResponse).toEqual(ok(mockSurveyResultModel()));
   });
 });
