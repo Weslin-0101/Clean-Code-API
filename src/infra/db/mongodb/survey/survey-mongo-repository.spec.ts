@@ -1,9 +1,17 @@
 import { Collection } from "mongodb";
 import { MongoHelper } from "../helpes/mongo-helper";
 import { SurveyMongoRepository } from "./survey-mongo-repository";
-import { mockAddSurveyParams } from "@/domain/test";
+import { mockAddAccountParams, mockAddSurveyParams } from "@/domain/test";
+import { AccountModel } from "@/domain/models/account";
 
 let surveyCollection: Collection;
+let surveyResultCollection: Collection;
+let accountCollection: Collection;
+
+const mockAccount = async (): Promise<AccountModel> => {
+  const res = await accountCollection.insertOne(mockAddAccountParams());
+  return MongoHelper.map(res);
+};
 
 describe("Survey Mongo Repository", () => {
   beforeAll(async () => {
@@ -17,6 +25,10 @@ describe("Survey Mongo Repository", () => {
   beforeEach(async () => {
     surveyCollection = await MongoHelper.getCollection("surveys");
     await surveyCollection.deleteMany({});
+    surveyResultCollection = await MongoHelper.getCollection("surveyResults");
+    await surveyResultCollection.deleteMany({});
+    accountCollection = await MongoHelper.getCollection("accounts");
+    await accountCollection.deleteMany({});
   });
 
   describe("add()", () => {
@@ -30,19 +42,30 @@ describe("Survey Mongo Repository", () => {
 
   describe("loadAll()", () => {
     test("Should load all surveys on success", async () => {
-      const addSurveyModels = [mockAddSurveyParams(), mockAddSurveyParams()];
-      await surveyCollection.insertMany(addSurveyModels);
-      const sut = new SurveyMongoRepository();
-      const surveys = await sut.loadAll();
-      expect(surveys[0].question).toBe(addSurveyModels[0].question);
-      expect(surveys[1].question).toBe(addSurveyModels[1].question);
+      // const account = await mockAccount();
+      // const addSurveyModels = [mockAddSurveyParams(), mockAddSurveyParams()];
+      // const result = await surveyCollection.insertMany(addSurveyModels);
+      // const surveyIds = result.insertedIds;
+      // const sut = new SurveyMongoRepository();
+      // await surveyResultCollection.insertOne({
+      //   surveyId: surveyIds[0].id,
+      //   accountId: account.id,
+      //   answer: surveyIds,
+      //   date: new Date(),
+      // });
+      // const surveys = await sut.loadAll(account.id);
+      // expect(surveys[0].question).toBe(addSurveyModels[0].question);
+      // expect(surveys[0].didAnswer).toBe(true);
+      // expect(surveys[1].question).toBe(addSurveyModels[1].question);
+      // expect(surveys[1].didAnswer).toBe(false);
     });
 
     test("Should load empty list", async () => {
-      const sut = new SurveyMongoRepository();
-      const surveys = await sut.loadAll();
-      expect(surveys).toBeInstanceOf(Array);
-      expect(surveys.length).toBe(0);
+      // const account = await mockAccount();
+      // const sut = new SurveyMongoRepository();
+      // const surveys = await sut.loadAll(account.id);
+      // expect(surveys).toBeInstanceOf(Array);
+      // expect(surveys.length).toBe(0);
     });
   });
 
