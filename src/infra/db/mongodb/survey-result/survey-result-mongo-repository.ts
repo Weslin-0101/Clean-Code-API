@@ -31,7 +31,10 @@ export class SurveyResultMongoRepository
     );
   }
 
-  async loadBySurveyId(surveyId: string): Promise<SurveyResultModel> {
+  async loadBySurveyId(
+    surveyId: string,
+    accountId: string
+  ): Promise<SurveyResultModel> {
     const surveyResultCollection = await MongoHelper.getCollection(
       "surveyResults"
     );
@@ -72,6 +75,15 @@ export class SurveyResultMongoRepository
         count: {
           $sum: 1,
         },
+        currentAccountAnswer: {
+          $push: {
+            $cond: [
+              { $eq: ["$data.accountId", accountId] },
+              "$data.answer",
+              null,
+            ],
+          },
+        },
       })
       .project({
         _id: 0,
@@ -110,6 +122,14 @@ export class SurveyResultMongoRepository
                       },
                       else: 0,
                     },
+                  },
+                  isCurrentAccountAnswer: {
+                    $eq: [
+                      "$$item.answer",
+                      {
+                        $arrayElemeAt: ["$currentAccountAnswer", 0],
+                      },
+                    ],
                   },
                 },
               ],
@@ -152,6 +172,7 @@ export class SurveyResultMongoRepository
           date: "$date",
           answer: "$answers.answer",
           image: "$answers.image",
+          isCurrentAccountAnswer: "$answers.isCurrentAccountAnswer",
         },
         count: {
           $sum: "$answers.count",
@@ -170,6 +191,7 @@ export class SurveyResultMongoRepository
           image: "$_id.image",
           count: "$count",
           percent: "$percent",
+          isCurrentAccountAnswer: "$_id.isCurrentAccountAnswer",
         },
       })
       .sort({
