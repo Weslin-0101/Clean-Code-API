@@ -1,39 +1,50 @@
-import { HttpRequest, HttpResponse, Controller, AddAccount, Validation, Authentication } from './signup-controller-protocols'
-import { badRequest, serverError, ok, forbidden } from '../../../helpers/http/http-helper'
-import { EmailInUseError } from '../../../errors'
+import {
+  HttpRequest,
+  HttpResponse,
+  Controller,
+  AddAccount,
+  Validation,
+  Authentication,
+} from "./signup-controller-protocols";
+import {
+  badRequest,
+  serverError,
+  ok,
+  forbidden,
+} from "../../../helpers/http/http-helper";
+import { EmailInUseError } from "../../../errors";
 
 export class SignUpController implements Controller {
   constructor(
-    private readonly _addAccount: AddAccount, 
+    private readonly _addAccount: AddAccount,
     private readonly _validation: Validation,
     private readonly _authentication: Authentication
   ) {}
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const error = this._validation.validate(httpRequest.body)
+      const error = this._validation.validate(httpRequest.body);
       if (error) {
-        return badRequest(error)
+        return badRequest(error);
       }
 
-      const { name, email, password } = httpRequest.body
+      const { name, email, password } = httpRequest.body;
       const account = await this._addAccount.add({
         name,
         email,
-        password
-      })
+        password,
+      });
 
-      if (!account) return forbidden(new EmailInUseError())
+      if (!account) return forbidden(new EmailInUseError());
 
-      const accessToken = await this._authentication.auth({
+      const authenticationModel = await this._authentication.auth({
         email,
-        password
-      })
-  
-      return ok({ accessToken })
+        password,
+      });
 
+      return ok(authenticationModel);
     } catch (error) {
-      return serverError(error)
+      return serverError(error);
     }
   }
 }

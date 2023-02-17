@@ -1,3 +1,4 @@
+export * from "@/domain/models/authentication";
 export * from "@/domain/useCases/authentication";
 export * from "@/data/protocols/db/account/load-account-email-repository";
 export * from "@/data/protocols/db/account/update-access-token-repository";
