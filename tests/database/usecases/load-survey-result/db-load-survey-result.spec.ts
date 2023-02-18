@@ -1,9 +1,9 @@
-import { DbLoadSurveyResult } from "../../../../src/data/useCases/load-survey-result/db-load-survye-result";
+import { DbLoadSurveyResult } from "@/data/useCases/load-survey-result/db-load-survye-result";
 import {
   LoadSurveyByIdRepositorySpy,
   LoadSurveyResultRepositorySpy,
-} from "../../mocks";
-import { throwError } from "../../../domain/mocks";
+} from "@/tests/database/mocks";
+import { throwError } from "@/tests/domain/mocks";
 import MockDate from "mockdate";
 import faker from "faker";
 

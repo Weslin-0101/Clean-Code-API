@@ -4,13 +4,13 @@ import {
   ok,
   serverError,
 } from "@/presentation/helpers/http/http-helper";
+import { SaveSurveyResultController } from "@/presentation/controller/survey-result/save-survey-result/save-survey-result-controller";
+import { HttpRequest } from "@/presentation/controller/survey-result/save-survey-result/save-survey-result-controller-protocols";
 import {
   SaveSurveyResultSpy,
   LoadSurveyByIdSpy,
-} from "../../../../presentation/mocks";
-import { SaveSurveyResultController } from "../../../../../src/presentation/controller/survey-result/save-survey-result/save-survey-result-controller";
-import { HttpRequest } from "../../../../../src/presentation/controller/survey-result/save-survey-result/save-survey-result-controller-protocols";
-import { throwError } from "../../../../domain/mocks";
+} from "@/tests/presentation/mocks";
+import { throwError } from "@/tests/domain/mocks";
 import MockDate from "mockdate";
 import faker from "faker";
 

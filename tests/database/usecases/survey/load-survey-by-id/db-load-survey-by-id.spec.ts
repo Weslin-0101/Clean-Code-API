@@ -1,7 +1,7 @@
-import { DbLoadSurveyById } from "../../../../../src/data/useCases/survey/load-survey-by-id/db-load-survey-by-id";
+import { DbLoadSurveyById } from "@/data/useCases/survey/load-survey-by-id/db-load-survey-by-id";
 import MockDate from "mockdate";
-import { throwError } from "../../../../domain/mocks";
-import { LoadSurveyByIdRepositorySpy } from "../../../mocks";
+import { throwError } from "@/tests/domain/mocks";
+import { LoadSurveyByIdRepositorySpy } from "@/tests/database/mocks";
 import faker from "faker";
 
 type SutTypes = {

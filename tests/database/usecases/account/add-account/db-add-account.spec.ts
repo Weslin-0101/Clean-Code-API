@@ -1,4 +1,4 @@
-import { DbAddAccount } from "../../../../../src/data/useCases/account/add-account/db-add-account";
+import { DbAddAccount } from "@/data/useCases/account/add-account/db-add-account";
 import {
   HasherSpy,
   AddAccountRepositorySpy,

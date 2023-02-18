@@ -1,6 +1,9 @@
-import { DbLoadAccountByToken } from "../../../../../src/data/useCases/account/load-account-by-token/db-load-account-by-token";
-import { DecrypterSpy, LoadAccountByTokenRepositorySpy } from "../../../mocks";
-import { throwError } from "../../../../domain/mocks";
+import { DbLoadAccountByToken } from "@/data/useCases/account/load-account-by-token/db-load-account-by-token";
+import {
+  DecrypterSpy,
+  LoadAccountByTokenRepositorySpy,
+} from "@/tests/database/mocks";
+import { throwError } from "@/tests/domain/mocks";
 import faker from "faker";
 
 type SutTypes = {

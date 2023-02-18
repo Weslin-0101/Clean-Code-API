@@ -6,7 +6,7 @@ import {
 import { LoadAccountByToken } from "@/domain/useCases/load-account-by-token";
 import { AccountModel } from "@/domain/models/account";
 import { AuthenticationModel } from "@/domain/models/authentication";
-import { mockAccountModel } from "../../domain/mocks";
+import { mockAccountModel } from "@/tests/domain/mocks";
 import faker from "faker";
 
 export class AddAccountSpy implements AddAccount {

@@ -1,4 +1,5 @@
-import { SignUpController } from "../../../../../src/presentation/controller/login/signup/signup-controller";
+import { SignUpController } from "@/presentation/controller/login/signup/signup-controller";
+import { HttpRequest } from "@/presentation/controller/login/signup/signup-controller-protocols";
 import {
   MissingParamError,
   ServerError,
@@ -14,10 +15,9 @@ import {
   AuthenticationSpy,
   ValidationSpy,
   AddAccountSpy,
-} from "../../../../presentation/mocks";
-import { throwError } from "../../../../domain/mocks";
+} from "@/tests/presentation/mocks";
+import { throwError } from "@/tests/domain/mocks";
 import faker from "faker";
-import { HttpRequest } from "../../../../../src/presentation/controller/login/signup/signup-controller-protocols";
 
 type SutTypes = {
   sut: SignUpController;

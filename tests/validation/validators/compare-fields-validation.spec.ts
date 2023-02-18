@@ -1,5 +1,5 @@
 import { InvalidParamError } from "@/presentation/errors";
-import { CompareFieldsValidation } from "../../../src/validation/validators/compare-fields-validation";
+import { CompareFieldsValidation } from "@/validation/validators/compare-fields-validation";
 import faker from "faker";
 
 const field = faker.random.word();

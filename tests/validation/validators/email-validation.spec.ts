@@ -1,8 +1,8 @@
-import { EmailValidation } from "../../../src/validation/validators/email-validation";
-import { EmailValidatorSpy } from "../mocks";
-import { throwError } from "../../domain/mocks";
-import faker from "faker";
+import { EmailValidation } from "@/validation/validators/email-validation";
+import { EmailValidatorSpy } from "@/tests/validation/mocks";
+import { throwError } from "@/tests/domain/mocks";
 import { InvalidParamError } from "@/presentation/errors";
+import faker from "faker";
 
 type SutTypes = {
   sut: EmailValidation;

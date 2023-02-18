@@ -1,10 +1,10 @@
 import { Collection } from "mongodb";
-import { MongoHelper } from "../../../../../src/infra/db/mongodb/helpes/mongo-helper";
-import { SurveyMongoRepository } from "../../../../../src/infra/db/mongodb/survey/survey-mongo-repository";
+import { MongoHelper } from "@/infra/db/mongodb/helpes/mongo-helper";
+import { SurveyMongoRepository } from "@/infra/db/mongodb/survey/survey-mongo-repository";
 import {
   mockAddAccountParams,
   mockAddSurveyParams,
-} from "../../../../domain/mocks";
+} from "@/tests/domain/mocks";
 import { AccountModel } from "@/domain/models/account";
 
 let surveyCollection: Collection;

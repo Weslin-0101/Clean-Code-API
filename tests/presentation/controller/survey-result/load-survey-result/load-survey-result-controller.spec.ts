@@ -1,13 +1,16 @@
-import { LoadSurveyResultController } from "../../../../../src/presentation/controller/survey-result/load-survey-result/load-survey-result-controller";
-import { HttpRequest } from "../../../../../src/presentation/controller/survey-result/load-survey-result/load-survye-result-controller-protocols";
-import { LoadSurveyByIdSpy, LoadSurveyResultSpy } from "../../../mocks";
+import { LoadSurveyResultController } from "@/presentation/controller/survey-result/load-survey-result/load-survey-result-controller";
+import { HttpRequest } from "@/presentation/controller/survey-result/load-survey-result/load-survye-result-controller-protocols";
+import {
+  LoadSurveyByIdSpy,
+  LoadSurveyResultSpy,
+} from "@/tests/presentation/mocks";
 import {
   forbidden,
   ok,
   serverError,
 } from "@/presentation/helpers/http/http-helper";
 import { InvalidParamError } from "@/presentation/errors";
-import { throwError } from "../../../../domain/mocks";
+import { throwError } from "@/tests/domain/mocks";
 import faker from "faker";
 
 type SutTypes = {

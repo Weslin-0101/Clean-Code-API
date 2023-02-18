@@ -1,5 +1,5 @@
-import { LoginController } from "../../../../../src/presentation/controller/login/login/login-controller";
-import { HttpRequest } from "../../../../../src/presentation/controller/login/login/login-controller-protocols";
+import { LoginController } from "@/presentation/controller/login/login/login-controller";
+import { HttpRequest } from "@/presentation/controller/login/login/login-controller-protocols";
 import {
   badRequest,
   ok,
@@ -7,11 +7,8 @@ import {
   unauthorized,
 } from "@/presentation/helpers/http/http-helper";
 import { MissingParamError } from "@/presentation/errors";
-import {
-  AuthenticationSpy,
-  ValidationSpy,
-} from "../../../../presentation/mocks";
-import { throwError, mockAuthenticationParams } from "../../../../domain/mocks";
+import { AuthenticationSpy, ValidationSpy } from "@/tests/presentation/mocks";
+import { throwError, mockAuthenticationParams } from "@/tests/domain/mocks";
 import faker from "faker";
 
 type SutTypes = {

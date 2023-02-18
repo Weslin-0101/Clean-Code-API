@@ -1,12 +1,12 @@
-import { LoadSurveysController } from "../../../../../src/presentation/controller/survey/load-surveys/load-surveys-controller";
-import { HttpRequest } from "../../../../../src/presentation/controller/survey/load-surveys/load-surveys-controller-protocols";
+import { LoadSurveysController } from "@/presentation/controller/survey/load-surveys/load-surveys-controller";
+import { HttpRequest } from "@/presentation/controller/survey/load-surveys/load-surveys-controller-protocols";
 import {
   noContent,
   ok,
   serverError,
-} from "../../../../../src/presentation/helpers/http/http-helper";
-import { throwError } from "../../../../domain/mocks";
-import { LoadSurveysSpy } from "../../../mocks";
+} from "@/presentation/helpers/http/http-helper";
+import { throwError } from "@/tests/domain/mocks";
+import { LoadSurveysSpy } from "@/tests/presentation/mocks";
 import MockDate from "mockdate";
 import faker from "faker";
 

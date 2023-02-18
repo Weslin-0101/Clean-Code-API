@@ -3,9 +3,9 @@ import {
   RequiredFieldValidation,
   ValidationComposite,
 } from "@/validation/validators";
-import { Validation } from "@/presentation/protocols/validation";
-import { makeLoginValidation } from "../../../../../src/main/factories/controllers/login/login-validation-factory";
 import { EmailValidatorAdapter } from "@/infra/validators/email-validator-adapter";
+import { makeLoginValidation } from "@/main/factories/controllers/login/login-validation-factory";
+import { Validation } from "@/presentation/protocols/validation";
 
 jest.mock("@/validation/validators/validation-composite");
 

@@ -1,12 +1,12 @@
-import { HttpRequest } from "../../../../../src/presentation/controller/survey/add-survey/add-survey-controller-protocols";
-import { AddSurveyController } from "../../../../../src/presentation/controller/survey/add-survey/add-survey-controller";
+import { HttpRequest } from "@/presentation/controller/survey/add-survey/add-survey-controller-protocols";
+import { AddSurveyController } from "@/presentation/controller/survey/add-survey/add-survey-controller";
 import {
   badRequest,
   noContent,
   serverError,
 } from "@/presentation/helpers/http/http-helper";
-import { ValidationSpy, AddSurveySpy } from "../../../mocks";
-import { throwError } from "../../../../domain/mocks";
+import { ValidationSpy, AddSurveySpy } from "@/tests/presentation/mocks";
+import { throwError } from "@/tests/domain/mocks";
 import MockDate from "mockdate";
 import faker from "faker";
 

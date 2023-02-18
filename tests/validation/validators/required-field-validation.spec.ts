@@ -1,5 +1,5 @@
 import { MissingParamError } from "@/presentation/errors";
-import { RequiredFieldValidation } from "../../../src/validation/validators/required-field-validation";
+import { RequiredFieldValidation } from "@/validation/validators/required-field-validation";
 import faker from "faker";
 
 const field = faker.random.word();

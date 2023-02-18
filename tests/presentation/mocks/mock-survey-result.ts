@@ -3,8 +3,8 @@ import {
   SaveSurveyResultParams,
 } from "@/domain/useCases/save-survey-result";
 import { SurveyResultModel } from "@/domain/models/survey-result";
-import { mockSurveyResultModel } from "../../domain/mocks";
 import { LoadSurveyResult } from "@/domain/useCases/load-survey-result";
+import { mockSurveyResultModel } from "@/tests/domain/mocks";
 
 export class SaveSurveyResultSpy implements SaveSurveyResult {
   surveyResultModel = mockSurveyResultModel();

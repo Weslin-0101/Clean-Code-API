@@ -2,10 +2,10 @@ import {
   forbidden,
   ok,
   serverError,
-} from "../../../src/presentation/helpers/http/http-helper";
-import { AccessDeniedError } from "../../../src/presentation/errors";
-import { AuthMiddleware } from "../../../src/presentation/middleware/auth-middleware";
-import { HttpRequest } from "../../../src/presentation/middleware/auth-middleware-protocols";
+} from "@/presentation/helpers/http/http-helper";
+import { AccessDeniedError } from "@/presentation/errors";
+import { AuthMiddleware } from "@/presentation/middleware/auth-middleware";
+import { HttpRequest } from "@/presentation/middleware/auth-middleware-protocols";
 import { LoadAccountByTokenSpy } from "../../presentation/mocks";
 import { throwError } from "../../domain/mocks";
 

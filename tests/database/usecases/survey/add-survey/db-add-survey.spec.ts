@@ -1,6 +1,6 @@
-import { DbAddSurvey } from "../../../../../src/data/useCases/survey/add-survey/db-add-survey";
-import { AddSurveyRepositorySpy } from "../../../mocks";
-import { mockAddSurveyParams, throwError } from "../../../../domain/mocks";
+import { DbAddSurvey } from "@/data/useCases/survey/add-survey/db-add-survey";
+import { AddSurveyRepositorySpy } from "@/tests/database/mocks";
+import { mockAddSurveyParams, throwError } from "@/tests/domain/mocks";
 import MockDate from "mockdate";
 
 type SutTypes = {
