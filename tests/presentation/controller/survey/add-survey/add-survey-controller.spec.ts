@@ -1,4 +1,3 @@
-import { HttpRequest } from "@/presentation/controller/survey/add-survey/add-survey-controller-protocols";
 import { AddSurveyController } from "@/presentation/controller/survey/add-survey/add-survey-controller";
 import {
   badRequest,
@@ -27,17 +26,14 @@ const makeSut = (): SutTypes => {
   };
 };
 
-const mockRequest = (): HttpRequest => ({
-  body: {
-    question: faker.random.words(),
-    answers: [
-      {
-        image: faker.image.imageUrl(),
-        answer: faker.random.word(),
-      },
-    ],
-    date: new Date(),
-  },
+const mockRequest = (): AddSurveyController.Request => ({
+  question: faker.random.words(),
+  answers: [
+    {
+      image: faker.image.imageUrl(),
+      answer: faker.random.word(),
+    },
+  ],
 });
 
 describe("AddSurvey Controller", () => {
@@ -51,9 +47,9 @@ describe("AddSurvey Controller", () => {
 
   test("Should call Validation with correct values", async () => {
     const { sut, validationSpy } = makeSut();
-    const httpRequest = mockRequest();
-    await sut.handle(httpRequest);
-    expect(validationSpy.input).toEqual(httpRequest.body);
+    const request = mockRequest();
+    await sut.handle(request);
+    expect(validationSpy.input).toEqual(request);
   });
 
   test("Should return 400 if Validation fails", async () => {
@@ -65,9 +61,12 @@ describe("AddSurvey Controller", () => {
 
   test("Should call AddSurvey with correct values", async () => {
     const { sut, addSurveySpy } = makeSut();
-    const httpRequest = mockRequest();
-    await sut.handle(httpRequest);
-    expect(addSurveySpy.addSurveyParams).toEqual(httpRequest.body);
+    const request = mockRequest();
+    await sut.handle(request);
+    expect(addSurveySpy.addSurveyParams).toEqual({
+      ...request,
+      date: new Date(),
+    });
   });
 
   test("Should return 500 if AddSurvey throws", async () => {

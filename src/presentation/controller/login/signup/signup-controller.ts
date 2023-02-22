@@ -1,5 +1,4 @@
 import {
-  HttpRequest,
   HttpResponse,
   Controller,
   AddAccount,
@@ -21,21 +20,21 @@ export class SignUpController implements Controller {
     private readonly _authentication: Authentication
   ) {}
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(request: SignUpController.Request): Promise<HttpResponse> {
     try {
-      const error = this._validation.validate(httpRequest.body);
+      const error = this._validation.validate(request);
       if (error) {
         return badRequest(error);
       }
 
-      const { name, email, password } = httpRequest.body;
-      const account = await this._addAccount.add({
+      const { name, email, password } = request;
+      const isValid = await this._addAccount.add({
         name,
         email,
         password,
       });
 
-      if (!account) return forbidden(new EmailInUseError());
+      if (!isValid) return forbidden(new EmailInUseError());
 
       const authenticationModel = await this._authentication.auth({
         email,
@@ -47,4 +46,13 @@ export class SignUpController implements Controller {
       return serverError(error);
     }
   }
+}
+
+export namespace SignUpController {
+  export type Request = {
+    name: string;
+    email: string;
+    password: string;
+    passwordConfirmation: string;
+  };
 }
