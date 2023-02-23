@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { AddAccountRepository } from "@/data/protocols/db/account/add-account-repository";
 import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-email-repository";
 import { LoadAccountByTokenRepository } from "@/data/protocols/db/account/load-account-token-repository";
+import { CheckAccountByEmailRepository } from "@/data/protocols/db/account/check-account-email-repository";
 import { UpdateAccessTokenRepository } from "@/data/protocols/db/account/update-access-token-repository";
 import { MongoHelper } from "@/infra/db/mongodb/helpes";
 
@@ -10,7 +11,8 @@ export class AccountMongoRepository
     AddAccountRepository,
     LoadAccountByEmailRepository,
     UpdateAccessTokenRepository,
-    LoadAccountByTokenRepository
+    LoadAccountByTokenRepository,
+    CheckAccountByEmailRepository
 {
   async add(
     data: AddAccountRepository.Params
@@ -27,17 +29,48 @@ export class AccountMongoRepository
   ): Promise<LoadAccountByEmailRepository.Result> {
     const accountCollection = await MongoHelper.getCollection("accounts");
     const account = await accountCollection.findOne(
-      { email },
-      { projection: { _id: 1, name: 1, password: 1 } }
+      {
+        email,
+      },
+      {
+        projection: {
+          _id: 1,
+          name: 1,
+          password: 1,
+        },
+      }
     );
     return account && MongoHelper.map(account);
+  }
+
+  async checkByEmail(
+    email: string
+  ): Promise<CheckAccountByEmailRepository.Result> {
+    const accountCollection = await MongoHelper.getCollection("accounts");
+    const account = await accountCollection.findOne(
+      {
+        email,
+      },
+      {
+        projection: {
+          _id: 1,
+        },
+      }
+    );
+    return account !== null;
   }
 
   async updateAccessToken(id: string, token: string): Promise<void> {
     const accountCollection = await MongoHelper.getCollection("accounts");
     await accountCollection.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: { accessToken: token } }
+      {
+        _id: new ObjectId(id),
+      },
+      {
+        $set: {
+          accessToken: token,
+        },
+      }
     );
   }
 
