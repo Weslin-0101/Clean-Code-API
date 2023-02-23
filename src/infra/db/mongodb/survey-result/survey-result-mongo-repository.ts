@@ -1,7 +1,6 @@
 import { QueryBuilder, MongoHelper } from "../helpes";
 import { LoadSurveyResultRepository } from "@/data/useCases/load-survey-result/db-load-survey-result-protocols";
 import {
-  SaveSurveyResultParams,
   SaveSurveyResultRepository,
   SurveyResultModel,
 } from "@/data/useCases/survey-result/save-survey-result/db-save-survey-result-protocols";
@@ -10,7 +9,7 @@ export class SurveyResultMongoRepository
   implements SaveSurveyResultRepository, LoadSurveyResultRepository
 {
   // Função totalmente errada. Possível manutenção futura.
-  async save(data: SaveSurveyResultParams): Promise<void> {
+  async save(data: SaveSurveyResultRepository.Params): Promise<void> {
     const surveyResultCollection = await MongoHelper.getCollection(
       "surveyResults"
     );
@@ -34,7 +33,7 @@ export class SurveyResultMongoRepository
   async loadBySurveyId(
     surveyId: string,
     accountId: string
-  ): Promise<SurveyResultModel> {
+  ): Promise<LoadSurveyResultRepository.Result> {
     const surveyResultCollection = await MongoHelper.getCollection(
       "surveyResults"
     );
