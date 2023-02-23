@@ -1,10 +1,11 @@
-import { Collection } from "mongodb";
+import { Collection, ObjectId } from "mongodb";
 import { MongoHelper } from "@/infra/db/mongodb/helpes/mongo-helper";
 import { SurveyMongoRepository } from "@/infra/db/mongodb/survey/survey-mongo-repository";
 import {
   mockAddAccountParams,
   mockAddSurveyParams,
 } from "@/tests/domain/mocks";
+import fakeObjectId from "bson-objectid";
 
 let surveyCollection: Collection;
 let surveyResultCollection: Collection;
@@ -12,7 +13,7 @@ let accountCollection: Collection;
 
 const mockAccountId = async (): Promise<string> => {
   const res = await accountCollection.insertOne(mockAddAccountParams());
-  return MongoHelper.map(res);
+  return res.insertedId.toHexString();
 };
 
 describe("Survey Mongo Repository", () => {
@@ -44,40 +45,59 @@ describe("Survey Mongo Repository", () => {
 
   describe("loadAll()", () => {
     test("Should load all surveys on success", async () => {
-      // const mockAccountId = await mockAccount();
-      // const addSurveyModels = [mockAddSurveyParams(), mockAddSurveyParams()];
-      // const result = await surveyCollection.insertMany(addSurveyModels);
-      // const surveyIds = result.insertedIds;
-      // const sut = new SurveyMongoRepository();
-      // await surveyResultCollection.insertOne({
-      //   surveyId: surveyIds[0].id,
-      //   accountId,
-      //   answer: surveyIds,
-      //   date: new Date(),
-      // });
-      // const surveys = await sut.loadAll(account.id);
-      // expect(surveys[0].question).toBe(addSurveyModels[0].question);
-      // expect(surveys[0].didAnswer).toBe(true);
-      // expect(surveys[1].question).toBe(addSurveyModels[1].question);
-      // expect(surveys[1].didAnswer).toBe(false);
+      const accountId = await mockAccountId();
+      const addSurveyModels = [mockAddSurveyParams(), mockAddSurveyParams()];
+      const result = await surveyCollection.insertMany(addSurveyModels);
+      const surveyIds = await surveyCollection.findOne({
+        _id: result.insertedIds[0],
+      });
+      const sut = new SurveyMongoRepository();
+      await surveyResultCollection.insertOne({
+        surveyId: surveyIds._id,
+        accountId: new ObjectId(accountId),
+        answer: surveyIds.answers[0].answer,
+        date: new Date(),
+      });
+      const surveys = await sut.loadAll(accountId);
+      expect(surveys.length).toBe(2);
+      expect(surveys[0].id).toBeTruthy();
+      expect(surveys[0].question).toBe(addSurveyModels[0].question);
+      expect(surveys[0].didAnswer).toBe(true);
+      expect(surveys[1].question).toBe(addSurveyModels[1].question);
+      expect(surveys[1].didAnswer).toBe(false);
     });
 
     test("Should load empty list", async () => {
-      // const account = await mockAccount();
-      // const sut = new SurveyMongoRepository();
-      // const surveys = await sut.loadAll(account.id);
-      // expect(surveys).toBeInstanceOf(Array);
-      // expect(surveys.length).toBe(0);
+      const accountId = await mockAccountId();
+      const sut = new SurveyMongoRepository();
+      const surveys = await sut.loadAll(accountId);
+      expect(surveys).toBeInstanceOf(Array);
+      expect(surveys.length).toBe(0);
     });
   });
 
   describe("loadById()", () => {
     test("Should load all survey by id on success", async () => {
-      //   const res = await surveyCollection.insertOne(mockAddSurveyParams());
-      //   const sut = makeSut();
-      //   const survey = await sut.loadById(res.ops[0]._id);
-      //   expect(survey).toBeTruthy();
-      //   expect(survey.id).toBeTruthy();
+      const res = await surveyCollection.insertOne(mockAddSurveyParams());
+      const sut = new SurveyMongoRepository();
+      const survey = await sut.loadById(res.insertedId.toHexString());
+      expect(survey).toBeTruthy();
+      expect(survey.id).toBeTruthy();
+    });
+  });
+
+  describe("checkById()", () => {
+    test("Should return true if survey exists", async () => {
+      const res = await surveyCollection.insertOne(mockAddSurveyParams());
+      const sut = new SurveyMongoRepository();
+      const exists = await sut.checkById(res.insertedId.toHexString());
+      expect(exists).toBeTruthy();
+    });
+
+    test("Should return false if survey not exists", async () => {
+      const sut = new SurveyMongoRepository();
+      const exists = await sut.checkById(fakeObjectId.generate());
+      expect(exists).toBeFalsy();
     });
   });
 });

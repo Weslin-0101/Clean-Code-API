@@ -7,13 +7,13 @@ import {
 import {
   Controller,
   HttpResponse,
-  LoadSurveyById,
+  CheckSurveyById,
   LoadSurveyResult,
 } from "./load-survye-result-controller-protocols";
 
 export class LoadSurveyResultController implements Controller {
   constructor(
-    private readonly _loadSurveyById: LoadSurveyById,
+    private readonly _checkSurveyById: CheckSurveyById,
     private readonly _loadSuveyResult: LoadSurveyResult
   ) {}
 
@@ -22,8 +22,8 @@ export class LoadSurveyResultController implements Controller {
   ): Promise<HttpResponse> {
     try {
       const { surveyId } = request;
-      const survey = await this._loadSurveyById.loadById(surveyId);
-      if (!survey) {
+      const exists = await this._checkSurveyById.checkById(surveyId);
+      if (!exists) {
         return forbidden(new InvalidParamError("surveyId"));
       }
       const surveyResult = await this._loadSuveyResult.load(
