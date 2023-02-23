@@ -3,7 +3,6 @@ import { LoadSurveysRepository } from "@/data/protocols/db/survey/load-survey-re
 import { AddSurveyRepository } from "@/data/useCases/survey/add-survey/db-add-survey.protocols";
 import { LoadSurveyByIdRepository } from "@/data/protocols/db/survey/load-survey-by-id-repository";
 import { LoadAnswersBySurveyRepository } from "@/data/protocols/db/survey/load-answers-by-survey-repository";
-import { SurveyModel } from "@/domain/models/survey";
 import { MongoHelper, QueryBuilder } from "../helpes";
 import { ObjectId } from "mongodb";
 
@@ -19,7 +18,7 @@ export class SurveyMongoRepository
     await surveyCollection.insertOne(data);
   }
 
-  async loadAll(accountId: string): Promise<SurveyModel[]> {
+  async loadAll(accountId: string): Promise<LoadSurveysRepository.Result> {
     const surveyCollection = await MongoHelper.getCollection("surveys");
     const query = new QueryBuilder()
       .lookup({
