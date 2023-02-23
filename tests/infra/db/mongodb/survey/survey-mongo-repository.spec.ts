@@ -84,6 +84,33 @@ describe("Survey Mongo Repository", () => {
       expect(survey).toBeTruthy();
       expect(survey.id).toBeTruthy();
     });
+
+    // test("Should return null if survey does not exists", async () => {
+    //   const sut = new SurveyMongoRepository();
+    //   const survey = await sut.loadById(new fakeObjectId().toHexString());
+    //   expect(survey).toBeFalsy();
+    // });
+  });
+
+  describe("loadAnswersBySurvey()", () => {
+    test("Should load answers on success", async () => {
+      const res = await surveyCollection.insertOne(mockAddSurveyParams());
+      const surveyIds = await surveyCollection.findOne({
+        _id: res.insertedId,
+      });
+      const sut = new SurveyMongoRepository();
+      const answers = await sut.loadAnswers(res.insertedId.toHexString());
+      expect(answers).toEqual([
+        surveyIds.answers[0].answer,
+        surveyIds.answers[1].answer,
+      ]);
+    });
+
+    test("Should return empty array if survey does not exists", async () => {
+      const sut = new SurveyMongoRepository();
+      const answers = await sut.loadAnswers(fakeObjectId.generate());
+      expect(answers).toEqual([]);
+    });
   });
 
   describe("checkById()", () => {
