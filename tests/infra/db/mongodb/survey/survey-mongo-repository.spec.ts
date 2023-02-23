@@ -5,13 +5,12 @@ import {
   mockAddAccountParams,
   mockAddSurveyParams,
 } from "@/tests/domain/mocks";
-import { AccountModel } from "@/domain/models/account";
 
 let surveyCollection: Collection;
 let surveyResultCollection: Collection;
 let accountCollection: Collection;
 
-const mockAccount = async (): Promise<AccountModel> => {
+const mockAccountId = async (): Promise<string> => {
   const res = await accountCollection.insertOne(mockAddAccountParams());
   return MongoHelper.map(res);
 };
@@ -45,14 +44,14 @@ describe("Survey Mongo Repository", () => {
 
   describe("loadAll()", () => {
     test("Should load all surveys on success", async () => {
-      // const account = await mockAccount();
+      // const mockAccountId = await mockAccount();
       // const addSurveyModels = [mockAddSurveyParams(), mockAddSurveyParams()];
       // const result = await surveyCollection.insertMany(addSurveyModels);
       // const surveyIds = result.insertedIds;
       // const sut = new SurveyMongoRepository();
       // await surveyResultCollection.insertOne({
       //   surveyId: surveyIds[0].id,
-      //   accountId: account.id,
+      //   accountId,
       //   answer: surveyIds,
       //   date: new Date(),
       // });

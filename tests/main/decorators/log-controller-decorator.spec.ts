@@ -2,7 +2,6 @@ import { serverError, ok } from "@/presentation/helpers/http/http-helper";
 import { Controller, HttpResponse } from "@/presentation/protocols";
 import { LogControllerDecorator } from "@/main/decorators/log-controller-decorator";
 import { LogErrorRepositorySpy } from "@/tests/database/mocks";
-import { mockAccountModel } from "@/tests/domain/mocks";
 import faker from "faker";
 
 type SutTypes = {
@@ -11,7 +10,7 @@ type SutTypes = {
   logErrorRepositorySpy: LogErrorRepositorySpy;
 };
 class ControllerSpy implements Controller {
-  httpResponse = ok(mockAccountModel());
+  httpResponse = ok(faker.random.uuid());
   request: any;
 
   async handle(request: any): Promise<HttpResponse> {

@@ -1,4 +1,3 @@
-import { AccountModel } from "@/domain/models/account";
 import { SurveyModel } from "@/domain/models/survey";
 import { Collection, ObjectId } from "mongodb";
 import { MongoHelper } from "@/infra/db/mongodb/helpes/mongo-helper";
@@ -17,7 +16,7 @@ const makeSurvey = async (): Promise<SurveyModel> => {
   return MongoHelper.map(res);
 };
 
-const makeAccount = async (): Promise<AccountModel> => {
+const makeAccount = async (): Promise<string> => {
   const res = await accountCollection.insertOne(mockAddAccountParams());
   return MongoHelper.map(res);
 };

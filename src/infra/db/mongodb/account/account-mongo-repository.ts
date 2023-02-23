@@ -3,7 +3,6 @@ import { AddAccountRepository } from "@/data/protocols/db/account/add-account-re
 import { LoadAccountByEmailRepository } from "@/data/protocols/db/account/load-account-email-repository";
 import { LoadAccountByTokenRepository } from "@/data/protocols/db/account/load-account-token-repository";
 import { UpdateAccessTokenRepository } from "@/data/protocols/db/account/update-access-token-repository";
-import { AccountModel } from "@/domain/models/account";
 import { MongoHelper } from "@/infra/db/mongodb/helpes";
 
 export class AccountMongoRepository
@@ -20,12 +19,17 @@ export class AccountMongoRepository
     const result = await accountCollection.insertOne(data);
     const { insertedId: id } = result;
     const accountById = await accountCollection.findOne({ _id: id });
-    return MongoHelper.map(accountById);
+    return accountById !== null;
   }
 
-  async loadByEmail(email: string): Promise<AccountModel> {
+  async loadByEmail(
+    email: string
+  ): Promise<LoadAccountByEmailRepository.Result> {
     const accountCollection = await MongoHelper.getCollection("accounts");
-    const account = await accountCollection.findOne({ email });
+    const account = await accountCollection.findOne(
+      { email },
+      { projection: { _id: 1, name: 1, password: 1 } }
+    );
     return account && MongoHelper.map(account);
   }
 
@@ -37,19 +41,29 @@ export class AccountMongoRepository
     );
   }
 
-  async loadByToken(token: string, role?: string): Promise<AccountModel> {
+  async loadByToken(
+    token: string,
+    role?: string
+  ): Promise<LoadAccountByTokenRepository.Result> {
     const accountCollection = await MongoHelper.getCollection("accounts");
-    const account = await accountCollection.findOne({
-      accessToken: token,
-      $or: [
-        {
-          role,
+    const account = await accountCollection.findOne(
+      {
+        accessToken: token,
+        $or: [
+          {
+            role,
+          },
+          {
+            role: "admin",
+          },
+        ],
+      },
+      {
+        projection: {
+          _id: 1,
         },
-        {
-          role: "admin",
-        },
-      ],
-    });
+      }
+    );
     return account && MongoHelper.map(account);
   }
 }
