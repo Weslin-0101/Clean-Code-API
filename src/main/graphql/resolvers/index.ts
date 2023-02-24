@@ -1,3 +1,4 @@
 import login from "./login";
+import surveys from "./survey";
 
-export default [login];
+export default [login, surveys];
