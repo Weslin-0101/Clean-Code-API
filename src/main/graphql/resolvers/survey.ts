@@ -3,6 +3,7 @@ import { makeLoadSurveysController } from "@/main/factories/controllers/load-sur
 
 export default {
   Query: {
-    surveys: async () => adpatResolver(makeLoadSurveysController()),
+    surveys: async (parent: any, args: any, context: any) =>
+      adpatResolver(makeLoadSurveysController(), args, context),
   },
 };

@@ -125,4 +125,79 @@ describe("SurveyResult GraphQL", () => {
       expect(res.errors[0].message).toBe("Access denied");
     });
   });
+
+  describe("SaveSurveyResult Mutation", () => {
+    const SaveSurveyResultMutation = gql`
+      mutation saveSurveyResult($surveyId: String!, $answer: String!) {
+        saveSurveyResult(surveyId: $surveyId, answer: $answer) {
+          question
+          answers {
+            answer
+            count
+            percent
+            isCurrentAccountAnswer
+          }
+          date
+        }
+      }
+    `;
+
+    // test("Should return SavesurveyResult", async () => {
+    //   const accessToken = await makeAccessToken();
+    //   const surveyRes = await surveyCollection.insertOne({
+    //     question: "Question",
+    //     answers: [
+    //       {
+    //         image: "http://image-name.com",
+    //         answer: "Answer 1",
+    //       },
+    //       {
+    //         answer: "Answer 2",
+    //       },
+    //     ],
+    //     date: new Date(),
+    //   });
+    //   const { query } = createTestClient({
+    //     apolloServer,
+    //     extendMockRequest: {
+    //       headers: {
+    //         "x-access-token": accessToken,
+    //       },
+    //     },
+    //   });
+    //   const res: any = await query(surveyResultQuery, {
+    //     variables: {
+    //       surveyId: surveyRes.insertedId.toHexString(),
+    //     },
+    //   });
+    //   expect(res.data.surveyResult.question).toBe("Question");
+    // });
+
+    test("Should return returns AccessDeniedError if no token is provided", async () => {
+      const surveyRes = await surveyCollection.insertOne({
+        question: "Question",
+        answers: [
+          {
+            image: "http://image-name.com",
+            answer: "Answer 1",
+          },
+          {
+            answer: "Answer 2",
+          },
+        ],
+        date: new Date(),
+      });
+      const { mutate } = createTestClient({
+        apolloServer,
+      });
+      const res: any = await mutate(SaveSurveyResultMutation, {
+        variables: {
+          surveyId: surveyRes.insertedId.toHexString(),
+          answer: "Answer 1",
+        },
+      });
+      expect(res.data).toBeFalsy();
+      expect(res.errors[0].message).toBe("Access denied");
+    });
+  });
 });
