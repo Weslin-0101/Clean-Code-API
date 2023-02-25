@@ -10,9 +10,7 @@ export class SurveyResultMongoRepository
 {
   // Função totalmente errada. Possível manutenção futura.
   async save(data: SaveSurveyResultRepository.Params): Promise<void> {
-    const surveyResultCollection = await MongoHelper.getCollection(
-      "surveyResults"
-    );
+    const surveyResultCollection = MongoHelper.getCollection("surveyResults");
     await surveyResultCollection.findOneAndUpdate(
       {
         surveyId: new ObjectId(data.surveyId),
@@ -34,9 +32,7 @@ export class SurveyResultMongoRepository
     surveyId: string,
     accountId: string
   ): Promise<LoadSurveyResultRepository.Result> {
-    const surveyResultCollection = await MongoHelper.getCollection(
-      "surveyResults"
-    );
+    const surveyResultCollection = MongoHelper.getCollection("surveyResults");
     const query = new QueryBuilder()
       .match({
         surveyId: new ObjectId(surveyId),
@@ -77,9 +73,9 @@ export class SurveyResultMongoRepository
         currentAccountAnswer: {
           $push: {
             $cond: [
-              { $eq: ["$data.accountId", accountId] },
+              { $eq: ["$data.accountId", new ObjectId(accountId)] },
               "$data.answer",
-              null,
+              "$invalid",
             ],
           },
         },
@@ -122,12 +118,18 @@ export class SurveyResultMongoRepository
                       else: 0,
                     },
                   },
-                  isCurrentAccountAnswer: {
-                    $eq: [
-                      "$$item.answer",
+                  isCurrentAccountAnswerCount: {
+                    $cond: [
                       {
-                        $arrayElemeAt: ["$currentAccountAnswer", 0],
+                        $eq: [
+                          "$$item.answer",
+                          {
+                            $arrayElemAt: ["$currentAccountAnswer", 0],
+                          },
+                        ],
                       },
+                      1,
+                      0,
                     ],
                   },
                 },
@@ -171,13 +173,15 @@ export class SurveyResultMongoRepository
           date: "$date",
           answer: "$answers.answer",
           image: "$answers.image",
-          isCurrentAccountAnswer: "$answers.isCurrentAccountAnswer",
         },
         count: {
           $sum: "$answers.count",
         },
         percent: {
           $sum: "$answers.percent",
+        },
+        isCurrentAccountAnswerCount: {
+          $sum: "$answers.isCurrentAccountAnswerCount",
         },
       })
       .project({
@@ -190,7 +194,9 @@ export class SurveyResultMongoRepository
           image: "$_id.image",
           count: "$count",
           percent: "$percent",
-          isCurrentAccountAnswer: "$_id.isCurrentAccountAnswer",
+          isCurrentAccountAnswer: {
+            $eq: ["$isCurrentAccountAnswerCount", 1],
+          },
         },
       })
       .sort({
@@ -208,7 +214,9 @@ export class SurveyResultMongoRepository
       })
       .project({
         _id: 0,
-        surveyId: "$_id.surveyId",
+        surveyId: {
+          $toString: "$_id.surveyId",
+        },
         question: "$_id.question",
         date: "$_id.date",
         answers: "$answers",
@@ -216,8 +224,8 @@ export class SurveyResultMongoRepository
       .build();
 
     const surveyResult = await surveyResultCollection
-      .aggregate(query)
+      .aggregate<SurveyResultModel>(query)
       .toArray();
-    return (surveyResult.length ? surveyResult[0] : null) as SurveyResultModel;
+    return surveyResult.length ? surveyResult[0] : null;
   }
 }

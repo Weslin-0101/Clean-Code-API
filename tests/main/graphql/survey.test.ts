@@ -24,7 +24,7 @@ const makeAccessToken = async (): Promise<string> => {
   const accessToken = sign({ id }, env.jwtSecret);
   await accountCollection.updateOne(
     {
-      _id: id,
+      _id: res.insertedId,
     },
     {
       $set: {
@@ -46,9 +46,9 @@ describe("Survey GraphQL", () => {
   });
 
   beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection("surveys");
+    surveyCollection = MongoHelper.getCollection("surveys");
     await surveyCollection.deleteMany({});
-    accountCollection = await MongoHelper.getCollection("accounts");
+    accountCollection = MongoHelper.getCollection("accounts");
     await accountCollection.deleteMany({});
   });
 
@@ -69,33 +69,33 @@ describe("Survey GraphQL", () => {
     `;
 
     test("Should return Surveys", async () => {
-      // const accessToken = await makeAccessToken();
-      // await surveyCollection.insertOne({
-      //   question: "Question",
-      //   answers: [
-      //     {
-      //       image: "http://image-name.com",
-      //       answer: "Answer 1",
-      //     },
-      //     {
-      //       answer: "Answer 2",
-      //     },
-      //   ],
-      //   date: new Date(),
-      // });
-      // const { query } = createTestClient({
-      //   apolloServer,
-      //   extendMockRequest: {
-      //     headers: {
-      //       "x-access-token": accessToken,
-      //     },
-      //   },
-      // });
-      // const res: any = await query(surveysQuery);
-      // expect(res.data.surveys.length).toBe(1);
-      // expect(res.data.surveys[0].id).toBeTruthy();
-      // expect(res.data.surveys[0].question).toBe("Question");
-      // expect(res.data.surveys[0].didAnswer).toBe(false);
+      const accessToken = await makeAccessToken();
+      await surveyCollection.insertOne({
+        question: "Question",
+        answers: [
+          {
+            image: "http://image-name.com",
+            answer: "Answer 1",
+          },
+          {
+            answer: "Answer 2",
+          },
+        ],
+        date: new Date(),
+      });
+      const { query } = createTestClient({
+        apolloServer,
+        extendMockRequest: {
+          headers: {
+            "x-access-token": accessToken,
+          },
+        },
+      });
+      const res: any = await query(surveysQuery);
+      expect(res.data.surveys.length).toBe(1);
+      expect(res.data.surveys[0].id).toBeTruthy();
+      expect(res.data.surveys[0].question).toBe("Question");
+      expect(res.data.surveys[0].didAnswer).toBe(false);
     });
 
     test("Should return AccessDeniedError if no token is provided", async () => {

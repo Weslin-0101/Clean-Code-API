@@ -19,7 +19,7 @@ describe("Log mongo Repository", () => {
   });
 
   beforeEach(async () => {
-    logCollection = await MongoHelper.getCollection("errors");
+    logCollection = MongoHelper.getCollection("errors");
     await logCollection.deleteMany({});
   });
 

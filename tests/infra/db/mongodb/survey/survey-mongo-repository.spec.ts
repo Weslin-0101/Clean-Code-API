@@ -26,11 +26,11 @@ describe("Survey Mongo Repository", () => {
   });
 
   beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection("surveys");
+    surveyCollection = MongoHelper.getCollection("surveys");
     await surveyCollection.deleteMany({});
-    surveyResultCollection = await MongoHelper.getCollection("surveyResults");
+    surveyResultCollection = MongoHelper.getCollection("surveyResults");
     await surveyResultCollection.deleteMany({});
-    accountCollection = await MongoHelper.getCollection("accounts");
+    accountCollection = MongoHelper.getCollection("accounts");
     await accountCollection.deleteMany({});
   });
 
@@ -87,7 +87,8 @@ describe("Survey Mongo Repository", () => {
 
     // test("Should return null if survey does not exists", async () => {
     //   const sut = new SurveyMongoRepository();
-    //   const survey = await sut.loadById(new fakeObjectId().toHexString());
+    //   const surveyId = new fakeObjectId().toHexString();
+    //   const survey = await sut.loadById(surveyId);
     //   expect(survey).toBeFalsy();
     // });
   });

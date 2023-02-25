@@ -15,11 +15,11 @@ const makeAccessToken = async (): Promise<string> => {
     password: "123",
   });
 
-  const id = res.insertedId;
+  const id = res.insertedId.toHexString();
   const accessToken = sign({ id }, env.jwtSecret);
   await accountCollection.updateOne(
     {
-      _id: id,
+      _id: res.insertedId,
     },
     {
       $set: {
@@ -55,8 +55,8 @@ describe("Survey Routes", () => {
     //     question: "Question",
     //     answers: [
     //       {
-    //         image: "http://image-name.com",
     //         answer: "Answer 1",
+    //         image: "http://image-name.com",
     //       },
     //       {
     //         answer: "Answer 2",
@@ -65,7 +65,7 @@ describe("Survey Routes", () => {
     //     date: new Date(),
     //   });
     //   await request(app)
-    //     .put(`/api/surveys/${res.insertedId}/results`)
+    //     .put(`/api/surveys/${res.insertedId.toHexString()}/results`)
     //     .set("x-access-token", accessToken)
     //     .send({
     //       answer: "Answer 1",
@@ -85,8 +85,8 @@ describe("Survey Routes", () => {
     //     question: "Question",
     //     answers: [
     //       {
-    //         image: "http://image-name.com",
     //         answer: "Answer 1",
+    //         image: "http://image-name.com",
     //       },
     //       {
     //         answer: "Answer 2",
@@ -95,7 +95,7 @@ describe("Survey Routes", () => {
     //     date: new Date(),
     //   });
     //   await request(app)
-    //     .get(`/api/surveys/${res}/results`)
+    //     .get(`/api/surveys/${res.insertedId.toHexString()}/results`)
     //     .set("x-access-token", accessToken)
     //     .expect(200);
     // });

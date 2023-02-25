@@ -64,7 +64,7 @@
     "graphql": "^15.4.0",
     "jsonwebtoken": "^9.0.0",
     "module-alias": "^2.2.2",
-    "mongodb": "^4.9.0",
+    "mongodb": "^5.1.0",
     "swagger-ui-express": "^4.6.0",
     "validator": "^13.9.0"
   },
