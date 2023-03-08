@@ -11,6 +11,7 @@
     "check": "npm-check -s -u",
     "postbuild": "copyfiles -u 1 public/**/* dist/static",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:watch": "npm test -- --watch",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
